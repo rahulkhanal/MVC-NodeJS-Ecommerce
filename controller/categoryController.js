@@ -1,49 +1,61 @@
 const Category = require("../model/category");
 
-// Create Category
-exports.createCategory = async (req, res) => {
+exports.addCategory = async (req, res) => {
   try {
-    const newCategory = new Category({
-      name: req.body.name,
-      description: req.body.description,
-    });
-
+    const { name } = req.body;
+    const newCategory = new Category({ name });
     await newCategory.save();
-    res.redirect("/categories");
+    res.status(201).json(newCategory);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
   }
 };
 
-// Read Categories
-exports.getCategories = async (req, res) => {
+exports.getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find();
-    res.render("categories", { categories });
+    res.render("dashboard-category.hbs", { categories });
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
   }
 };
 
-// Update Category
-exports.updateCategory = async (req, res) => {
+exports.getCategoryById = async (req, res) => {
   try {
-    await Category.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-      description: req.body.description,
-    });
-    res.redirect("/categories");
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    res.status(200).json(category);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
   }
 };
 
-// Delete Category
-exports.deleteCategory = async (req, res) => {
+exports.updateCategoryById = async (req, res) => {
   try {
-    await Category.findByIdAndDelete(req.params.id);
-    res.redirect("/categories");
+    const updatedCategory = await Category.findByIdAndUpdate(
+      req.params.id,
+      { name: req.body.name },
+      { new: true }
+    );
+    if (!updatedCategory) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    res.status(200).json(updatedCategory);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+exports.deleteCategoryById = async (req, res) => {
+  try {
+    const deletedCategory = await Category.findByIdAndDelete(req.params.id);
+    if (!deletedCategory) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred" });
   }
 };
