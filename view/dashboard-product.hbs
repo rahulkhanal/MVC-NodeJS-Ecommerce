@@ -12,7 +12,7 @@
           <ul class="nav-list">
             <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/dashboard-category">Category</a></li>
-            <li><a href="/dashboard-product">Products</a></li>
+            <li><a href="/register-product">Products</a></li>
             <li><a href="/orders">Orders</a></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
@@ -24,17 +24,24 @@
       </header>
       <table>
         <thead>
-          <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <tr>
+            <th>Id</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Category</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
         <tbody>
-          {{#each categories}}
+          {{#each products}}
           <tr>
             <td>{{this._id}}</td>
             <td>{{this.name}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.category.name}}</td>
             <td>
               <a href="/edit-category/{{this._id}}">
                 <button style="background-color: green">Edit</button></a

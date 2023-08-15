@@ -31,7 +31,8 @@ exports.addProduct = async (req, res) => {
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().populate("category");
-    res.status(200).json(products);
+    res.render("dashboard-product.hbs", { products });
+    // res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: "An error occurred" });
   }
