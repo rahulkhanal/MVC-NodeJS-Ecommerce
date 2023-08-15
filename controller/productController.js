@@ -37,7 +37,15 @@ exports.getAllProducts = async (req, res) => {
     res.status(500).json({ message: "An error occurred" });
   }
 };
-
+exports.getAllProductsindex = async (req, res) => {
+  try {
+    const products = await Product.find().populate("category");
+    res.render("index.hbs", { products });
+    // res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred" });
+  }
+};
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate("category");

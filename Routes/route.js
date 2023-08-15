@@ -1,8 +1,9 @@
 const express = require("express");
 const { getAllCategories } = require("../controller/categoryController");
-const { getAllProducts } = require("../controller/productController");
+const { getAllProducts, getAllProductsindex } = require("../controller/productController");
 const router = express.Router();
 
+router.get("/", getAllProductsindex);
 router.get("/login", (req, resp) => {
   resp.render("login.hbs");
 });
