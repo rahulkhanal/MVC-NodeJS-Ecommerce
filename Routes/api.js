@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { registerUserWithoutHashing } = require("../controller/userController");
-const { addProduct } = require("../controller/productController");
+const { addProduct, deleteProductById } = require("../controller/productController");
 const {
   addCategory,
   deleteCategoryById,
@@ -13,6 +13,8 @@ router.post("/add-user", registerUserWithoutHashing);
 
 //product
 router.post("/add-product", addProduct);
+router.delete("/delete-product/:id", deleteProductById);
+
 
 //category
 router.post("/add-category", addCategory);
