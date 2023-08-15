@@ -16,6 +16,7 @@ const URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017";
 const middlewaresErr = require("./Error/middleware-error");
 const connectDB = require("./database/connection");
 const router = require("./Routes/route");
+const api = require("./Routes/api");
 
 //middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,7 +27,7 @@ app.use(bodyParser.json());
 //error middlewares
 app.use(middlewaresErr);
 app.use(router);
-app.use("api", router);
+app.use("/api", api);
 
 //server
 const start = async () => {

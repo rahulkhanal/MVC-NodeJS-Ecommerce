@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controller/userController");
+const { registerUserWithoutHashing } = require("../controller/userController");
 
-router.post("add-user", userController);
+router.post("/add-user", registerUserWithoutHashing);
 
 module.exports = router;
