@@ -1,53 +1,91 @@
-const Product = require("../models/Product");
+const Product = require("../model/product");
+const Category = require("../model/category");
 
-// Create Product
-exports.createProduct = async (req, res) => {
+exports.addProduct = async (req, res) => {
   try {
+    const { name, price, quantity, categoryId } = req.body;
+
+    // Check if the category exists
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(400).json({ message: "Category not found" });
+    }
+
+    // Create a new product
     const newProduct = new Product({
-      name: req.body.name,
-      price: req.body.price,
-      quantity: req.body.quantity,
-      category: req.body.category,
+      name,
+      price,
+      quantity,
+      category: category._id,
     });
 
     await newProduct.save();
-    res.redirect("/products");
+    res.status(201).json(newProduct);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
   }
 };
 
-// Read Products
-exports.getProducts = async (req, res) => {
+exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().populate("category");
-    res.render("products", { products });
+    res.status(200).json(products);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
   }
 };
 
-// Update Product
-exports.updateProduct = async (req, res) => {
+exports.getProductById = async (req, res) => {
   try {
-    await Product.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-      price: req.body.price,
-      quantity: req.body.quantity,
-      category: req.body.category,
-    });
-    res.redirect("/products");
+    const product = await Product.findById(req.params.id).populate("category");
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json(product);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
   }
 };
 
-// Delete Product
-exports.deleteProduct = async (req, res) => {
+exports.updateProductById = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.redirect("/products");
+    const { name, price, quantity, categoryId } = req.body;
+
+    // Check if the category exists
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(400).json({ message: "Category not found" });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        price,
+        quantity,
+        category: category._id,
+      },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(updatedProduct);
   } catch (error) {
-    // Handle error
+    res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+exports.deleteProductById = async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred" });
   }
 };

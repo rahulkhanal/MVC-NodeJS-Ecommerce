@@ -1,0 +1,61 @@
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="./dashboardaddproduct.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/reigster-product">Products</a></li>
+        <li><a href="/orders">Orders</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Add a New Product</h1>
+    <form id="add-product-form">
+      <input type="text" name="name" placeholder="Product Name" required />
+      <input type="number" name="price" placeholder="Price" step="0.01" required />
+      <input type="number" name="quantity" placeholder="Quantity" required />
+      <select name="category" required>
+        <option value="" disabled selected>Select Category</option>
+        <!-- Populate the category options dynamically using AJAX -->
+        <option value="hello">Hello</option>
+      </select>
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+</body>
+<script>
+  $(document).ready(function() {
+    // Handle form submission
+    $('#add-product-form').submit(function(event) {
+      event.preventDefault();
+
+      const data = {
+        name: $('input[name="name"]').val(),
+        price: parseFloat($('input[name="price"]').val()),
+        quantity: parseInt($('input[name="quantity"]').val()),
+        category: $('select[name="category"]').val()
+      };
+      // Send data using AJAX
+      $.ajax({
+        url: 'http://localhost:7000/api/add-product',
+        method: 'POST',
+        data: data,
+        success: function(response) {
+          alert('Product added successfully!');
+        },
+        error: function(error) {
+          alert('An error occurred. Please try again.');
+          console.log(error);
+        }
+      });
+    });
+  });
+</script>
+</html>

@@ -8,7 +8,7 @@ router.get("/register-user", (req, resp) => {
   resp.render("register.hbs");
 });
 router.get("/reigster-product", (req, resp) => {
-  resp.render("dashboard-product.hbs");
+  resp.render("dashboard-product-add.hbs");
 });
 
 module.exports = router;
