@@ -26,6 +26,8 @@ app.use(bodyParser.json());
 //error middlewares
 app.use(middlewaresErr);
 app.use(router);
+app.use("api", router);
+
 //server
 const start = async () => {
   try {
