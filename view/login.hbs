@@ -1,22 +1,36 @@
 <html>
-  <head>
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Login</h1>
-      <form id="login-form" action="/login" method="POST">
-        <input type="email" name="email" placeholder="Email" required />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      <p>Don't have an account? <a href="/register">Register</a></p>
-    </div>
-  </body>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="/util.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="login-form" method="POST">
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="password" id="password" name="password" placeholder="Password" required />
+      <button type="submit" id="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register">Register</a></p>
+  </div>
+</body>
+<script>
+  $(document).ready(function() {
+    $('#login-form').submit(function(event) {
+      event.preventDefault();
+      const email = $('#email').val();
+      const password = $('#password').val();
+      $.ajax({
+        url: 'http://localhost:7000/api/user-login',
+        method: 'POST',
+        data: { email, password },
+        error: function(error) {
+          alert("error");
+          console.log(error)
+        }
+      });
+    });
+  });
+</script>
 </html>

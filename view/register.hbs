@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/util.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   </head>
@@ -12,6 +12,11 @@
         <input type="text" name="name" placeholder="Name" required>
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
+      <select name="role" id="">
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+      </select>
+      
       <button type="button" id="register-button">Register</button>
       </form>
       <p>Already have an account? <a href="/login">Login</a></p>
@@ -23,7 +28,7 @@
     const name = $('input[name="name"]').val();
     const email = $('input[name="email"]').val();
     const password = $('input[name="password"]').val();
-
+    const role = $('select[name="role"]').val();
     // Send registration data using AJAX
     $.ajax({
       url: 'http://localhost:7000/api/add-user',
@@ -32,7 +37,7 @@
         name: name,
         email: email,
         password: password,
-        role: "user"
+        role: role
       },
       success: function(response) {
         // Handle success (redirect or display a message)

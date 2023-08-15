@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Your Cart</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="cart-table-body">
+        <!-- Cart items will be added dynamically here using JavaScript -->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    $(document).ready(function() {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const tableBody = $('#cart-table-body');
+  let total = 0;
+    console.log(cartItems)
+  cartItems.forEach(function(item) {
+    const product = getProductById(item.productId); 
+    if (product) {
+      const row = $('<tr>');
+      row.append($('<td>', { text: product.name }));
+      row.append($('<td>', { text: item.quantity }));
+      row.append($('<td>', { text: product.price }));
+      const itemTotal = product.price * item.quantity;
+      total += itemTotal;
+      row.append($('<td>', { text: itemTotal }));
+      tableBody.append(row);
+    }
+  });
+
+  $('#cart-total').text(total.toFixed(2)); // Display the total cart value
+});
+
+function getProductById(productId) {
+  // Retrieve product details by ID from local storage
+  const products = JSON.parse(localStorage.getItem('products')) || [];
+  return products.find(product => product._id === productId);
+}
+
+  </script>
+</body>
+</html>

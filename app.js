@@ -21,11 +21,14 @@ const api = require("./Routes/api");
 //middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+const cookieParser = require('cookie-parser');
+
 
 //route middlewares
 
 //error middlewares
 app.use(middlewaresErr);
+app.use(cookieParser());
 app.use(router);
 app.use("/api", api);
 
