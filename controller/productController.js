@@ -6,8 +6,10 @@ exports.addProduct = async (req, res) => {
     const { name, price, quantity, categoryId } = req.body;
 
     // Check if the category exists
+    console.log(req.body);
     const category = await Category.findById(categoryId);
     if (!category) {
+      console.log("caategory doesnt match");
       return res.status(400).json({ message: "Category not found" });
     }
 

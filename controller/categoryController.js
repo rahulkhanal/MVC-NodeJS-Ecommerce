@@ -19,7 +19,14 @@ exports.getAllCategories = async (req, res) => {
     res.status(500).json({ message: "An error occurred" });
   }
 };
-
+exports.readAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred" });
+  }
+};
 exports.getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);

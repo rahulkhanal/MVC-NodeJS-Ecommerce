@@ -9,6 +9,7 @@
     <div class="container">
       <ul class="nav-list">
         <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/dashboard-category">Category</a></li>
         <li><a href="/register-product">Products</a></li>
         <li><a href="/orders">Orders</a></li>
         <li><a href="/logout">Logout</a></li>
@@ -22,15 +23,31 @@
       <input type="number" name="price" placeholder="Price" step="0.01" required />
       <input type="number" name="quantity" placeholder="Quantity" required />
       <select name="category" required>
-        <option value="" disabled selected>Select Category</option>
+        <option value="" disabled selected hidden>Select Category</option>
         <!-- Populate the category options dynamically using AJAX -->
-        <option value="hello">Hello</option>
       </select>
       <button type="submit">Add Product</button>
     </form>
   </div>
 </body>
 <script>
+  $.ajax({
+    url: 'http://localhost:7000/api/read-category',
+    method: 'GET',
+    success: function(categories) {
+      console.log(categories)
+      const select = $('select[name="category"]');
+      categories.forEach(function(category) {
+        select.append($('<option>', {
+          value: category._id,
+          text: category.name
+        }));
+      });
+    },
+    error: function(error) {
+      console.error(error);
+    }
+  });
   $(document).ready(function() {
     // Handle form submission
     $('#add-product-form').submit(function(event) {
@@ -40,7 +57,7 @@
         name: $('input[name="name"]').val(),
         price: parseFloat($('input[name="price"]').val()),
         quantity: parseInt($('input[name="quantity"]').val()),
-        category: $('select[name="category"]').val()
+        categoryId: $('select[name="category"]').val()
       };
       // Send data using AJAX
       $.ajax({
